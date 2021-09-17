@@ -1,16 +1,18 @@
 <template>
   <div id="app">
-    <GridBasics />
+    <GridApi />
   </div>
 </template>
 
 <script>
 import GridBasics from '@/components/Basics';
+import GridApi    from '@/components/GridApi';
 
 export default {
   name: 'App',
   components: {
-    GridBasics
+    GridBasics,
+    GridApi
   }
 };
 </script>
