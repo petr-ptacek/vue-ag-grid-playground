@@ -55,6 +55,10 @@ export default Vue.extend({
   align-items: center;
   padding: 5px 10px;
   box-sizing: border-box;
+
+  & > *:not(:last-child) {
+    margin-right: 6px;
+  }
 }
 
 .playground__content-wrapper {
