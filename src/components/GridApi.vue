@@ -8,6 +8,21 @@
               @click="getColumnDefsHandler">
         getColumnDefs
       </button>
+
+      <button class="btn btn--primary"
+              @click="setRowDataHandler">
+        setRowData
+      </button>
+
+      <button class="btn btn--primary"
+              @click="getFilterModelHandler">
+        getFilterModel
+      </button>
+
+      <button class="btn btn--primary"
+              @click="getSortModelHandler">
+        getSortModel
+      </button>
     </template>
 
     <AgGridVue
@@ -25,7 +40,7 @@ import Vue                from 'vue';
 import { AgGridVue }      from 'ag-grid-vue';
 import {
   defineGridOptions,
-  getDefaultGridOptions
+  getDefaultGridOptions, getRandomNumber
 }                         from '@/helpers';
 import PlaygroundTemplate from '@/components/PlaygroundTemplate';
 import { Service }        from '@/service';
@@ -52,8 +67,39 @@ export default Vue.extend({
         rowData: Service.getCars(100),
 
         // EVENTS
-        onGridReady: () => {
+        /**
+         * @param { import('ag-grid-community').GridReadyEvent } event
+         */
+        onGridReady: (event) => {
           this.gridOptions.api.sizeColumnsToFit();
+          window.$_gridApi = this.gridOptions.api;
+          window.$_gridColumnApi = this.gridOptions.columnApi;
+        },
+
+        /**
+         * @param { import('ag-grid-community').SortChangedEvent } event
+         */
+        onSortChanged: (event) => {
+          console.group('onSortChanged');
+          console.log(this.gridOptions.api.getSortModel());
+          console.groupEnd();
+        },
+        /**
+         * @param { import('ag-grid-community').GridSizeChangedEvent } event
+         */
+        onGridSizeChanged: (event) => {
+          console.group('onGridSizeChanged');
+          console.log(event);
+          console.groupEnd();
+        },
+
+        /**
+         * @param { import('ag-grid-community').BodyScrollEvent } event
+         */
+        onBodyScroll: (event) => {
+          console.group('onBodyScroll');
+          console.log(event);
+          console.groupEnd();
         }
       })
     };
@@ -63,7 +109,34 @@ export default Vue.extend({
      * @returns {void}
      */
     getColumnDefsHandler() {
+      const columns = this.gridOptions.columnApi.getAllColumns();
+      const columnDefs = columns.map(column => column.getColDef());
 
+      console.log(columnDefs);
+    },
+    /**
+     * @returns {void}
+     */
+    setRowDataHandler() {
+      this.gridOptions.api.setRowData(Service.getCars(getRandomNumber(1, 12)));
+    },
+    /**
+     * @returns {void}
+     */
+    getSortModelHandler() {
+      const sortModel = this.gridOptions.api.getSortModel();
+      console.group('getSortModel');
+      console.dir(sortModel);
+      console.groupEnd();
+    },
+    /**
+     * @returns {void}
+     */
+    getFilterModelHandler() {
+      const filterModel = this.gridOptions.api.getFilterModel();
+      console.group('getFilterModel');
+      console.dir(filterModel);
+      console.groupEnd();
     }
   },
   components: {
