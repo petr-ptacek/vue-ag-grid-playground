@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import TheGrid from '@/components/GridComponents';
+import TheGrid from '@/components/grid-components/App';
 import GridApi from '@/components/GridApi';
 
 export default {
