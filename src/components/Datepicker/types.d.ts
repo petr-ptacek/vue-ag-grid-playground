@@ -1,4 +1,4 @@
-export type Vue2datetimepickerProps = Partial<{
+export type Vue2DatetimePickerProps = Partial<{
   type: 'date' | 'datetime' | 'year' | 'month' | 'time' | 'week';
   range: boolean;
   format: string;
@@ -44,3 +44,34 @@ export type Vue2datetimepickerProps = Partial<{
   prefixClass: string;
   scrollDuration: number;
 }>
+
+
+export type Vue2DatetimepickerEvents = Partial<{
+  onInput:
+    (date: Date) => void;
+  onChange:
+    (date: Date, type: 'date' | 'hour' | 'minute' | 'second' | 'am' | 'pm') => void;
+  onOpen:
+    () => void;
+  onClose:
+    () => void;
+  onConfirm:
+    (date: Date) => void;
+  onClear:
+    () => void;
+  onInputError:
+    () => void;
+  onFocus:
+    () => void;
+  onBlur:
+    () => void;
+  onPick:
+    () => void;
+  onCalendarChange:
+    (date: Date, oldDate: Date, type: 'year' | 'month' | 'last-year' | 'next-year' | 'last-month' | 'next-month' | 'last-decade' | 'next-decade') => void;
+  onPanelChange: (type: 'year' | 'month' | 'date', oldType: 'year' | 'month' | 'date') => void;
+}>
+
+export type DatepickerOptions =
+  Vue2DatetimePickerProps &
+  Vue2DatetimepickerEvents

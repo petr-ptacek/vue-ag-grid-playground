@@ -1,5 +1,5 @@
 /**
- * @typedef { import('./datepickerOptions').DatepickerOptions } DatepickerOptions
+ * @typedef { import('./types').DatepickerOptions } DatepickerOptions
  */
 
 /**

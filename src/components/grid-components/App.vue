@@ -13,17 +13,21 @@
 </template>
 
 <script>
-import Vue                from 'vue';
-import { AgGridVue }      from 'ag-grid-vue';
-import PlaygroundTemplate from '@/components/PlaygroundTemplate';
+import Vue                         from 'vue';
+import { AgGridVue }               from 'ag-grid-vue';
+import PlaygroundTemplate          from '@/components/PlaygroundTemplate';
 import {
   defineGridOptions,
   getDefaultGridOptions
-}                         from '@/helpers';
-import { Service }        from '@/service';
-import MedalCellRenderer  from '@/components/grid-components/MedalCellRenderer';
-import TotalValueRenderer from '@/components/grid-components/TotalValueRenderer';
-import DateInput          from '@/components/grid-components/DateInput';
+}                                  from '@/helpers';
+import { Service }                 from '@/service';
+import MedalCellRenderer           from '@/components/grid-components/MedalCellRenderer';
+import TotalValueRenderer          from '@/components/grid-components/TotalValueRenderer';
+import AgDateInput                 from '@/components/grid-components/AgDateInput';
+import AgTextColumnFilter          from '@/components/grid-components/AgTextColumnFilter';
+import AgTextColumnFloatingFilter  from '@/components/grid-components/AgTextColumnFloatingFilter';
+import AgDateColumnFilter          from '@/components/grid-components/AgDateColumnFilter';
+import { defineDatepickerOptions } from '@/components/Datepicker/defineDatepickerOptions';
 
 export default Vue.extend({
   name: 'cell-renderer-example',
@@ -38,10 +42,13 @@ export default Vue.extend({
           defaultColDef: {
             flex: 1,
             sortable: true,
-            filter: true,
+            filter: 'agTextColumnFilter',
             resizable: true,
             minWidth: 100,
-            suppressMenu: true
+            suppressMenu: true,
+            floatingFilterComponentParams: {
+              suppressFilterButton: true
+            }
           },
           columnTypes: {
             medalColType: {
@@ -50,7 +57,13 @@ export default Vue.extend({
           },
           columnDefs: [
             {
-              field: 'athlete'
+              field: 'athlete',
+              filter: 'agTextColumnFilter',
+              floatingFilter: true,
+              floatingFilterComponentFramework: AgTextColumnFloatingFilter,
+              floatingFilterComponentParams: {
+                suppressFilterButton: true
+              }
             },
             // {
             //   field: 'year'
@@ -58,6 +71,11 @@ export default Vue.extend({
             {
               field: 'date',
               filter: 'agDateColumnFilter',
+              filterParams: {
+                $datepickerOptions: defineDatepickerOptions({
+                  disabled: false
+                })
+              },
               floatingFilter: true
             },
             {
@@ -104,6 +122,10 @@ export default Vue.extend({
           // EVENTS
           onFirstDataRendered: () => {
             this.state.gridOptions.api.sizeColumnsToFit();
+          },
+          onFilterChanged: (event) => {
+            console.log('onFilterChanged');
+            debugger
           }
         })
       }
@@ -112,9 +134,12 @@ export default Vue.extend({
   mounted() {
   },
   components: {
+    AgDateInput,
+    AgTextColumnFilter,
+    // AgTextColumnFloatingFilter,
+    AgDateColumnFilter,
     PlaygroundTemplate,
     AgGridVue,
-    AgDateInput: DateInput,
     TotalValueRenderer,
     MedalCellRenderer
   }
